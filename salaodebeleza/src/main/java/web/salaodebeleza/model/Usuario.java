@@ -34,6 +34,9 @@ public class Usuario implements Serializable {
 	private Long codigo;
 	@NotBlank(message = "O nome do usuário é obrigatório")
 	private String nome;
+	@Column(name = "cpf")
+	@NotNull(message = "O CPF do usuário é obrigatório")
+	private String cpf;
 	@NotBlank(message = "O e-mail do usuário é obrigatório")
 	private String email;
 	@NotBlank(message = "A senha do usuário é obrigatória")
@@ -44,6 +47,8 @@ public class Usuario implements Serializable {
 	@Column(name = "data_nascimento")
 	@NotNull(message = "A data de nascimento do usuário é obrigatória")
 	private LocalDate dataNascimento;
+	
+
 	private boolean ativo;
 	@ManyToMany
 	@JoinTable(name = "usuario_papel", joinColumns = @JoinColumn(name = "codigo_usuario"), inverseJoinColumns = @JoinColumn(name = "codigo_papel"))
@@ -100,6 +105,14 @@ public class Usuario implements Serializable {
 
 	public boolean isAtivo() {
 		return ativo;
+	}
+
+	public String getCpf() {
+		return cpf;
+	}
+
+	public void setCpf(String cpf) {
+		this.cpf = cpf;
 	}
 
 	public void setAtivo(boolean ativo) {
