@@ -35,7 +35,7 @@ public class FuncionarioController {
     @PostMapping("/cadastrar")
     public String cadastrar(Funcionario pessoa) {
         funcionarioService.salvar(pessoa);
-        return "redirect:/funcionario/mostrarmensagemcadastrook";
+        return "redirect:/funcionarios/mostrarmensagemcadastrook";
     }
 
     @GetMapping("/mostrarmensagemcadastrook")
