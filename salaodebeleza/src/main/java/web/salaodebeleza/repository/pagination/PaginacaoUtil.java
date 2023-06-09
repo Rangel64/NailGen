@@ -1,0 +1,84 @@
+package web.salaodebeleza.repository.pagination;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Set;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.TypedQuery;
+import jakarta.persistence.criteria.CriteriaBuilder;
+import jakarta.persistence.criteria.CriteriaQuery;
+import jakarta.persistence.criteria.Join;
+import jakarta.persistence.criteria.Order;
+import jakarta.persistence.criteria.Predicate;
+import jakarta.persistence.criteria.Root;
+
+public class PaginacaoUtil {
+	
+	private static final Logger logger = LoggerFactory.getLogger(PaginacaoUtil.class);
+
+	public static void prepararIntervalo(TypedQuery<?> typedQuery, Pageable pageable) {
+		int paginaAtual = pageable.getPageNumber();
+		int totalRegistrosPorPagina = pageable.getPageSize();
+		int primeiroRegistro = paginaAtual * totalRegistrosPorPagina;
+		logger.debug("Filtrando a página {}, registros entre {} e {}", paginaAtual, primeiroRegistro, primeiroRegistro + totalRegistrosPorPagina);
+		typedQuery.setFirstResult(primeiroRegistro);
+		typedQuery.setMaxResults(totalRegistrosPorPagina);
+	}
+	
+	public static void prepararOrdem(Root<?> root, CriteriaQuery<?> criteriaQuery, CriteriaBuilder builder, Pageable pageable) {
+		String atributo;
+		Sort sort = pageable.getSort();
+		Order order;
+		List<Order> ordenacoes = new ArrayList<>();
+		if (sort != null && !sort.isEmpty()) {
+			for (Sort.Order o : sort) {
+				logger.debug("Ordenando o resultado da pesquisa por {}, {}", o.getProperty(), o.getDirection());
+			    atributo = o.getProperty();
+			    order = o.isAscending() ? builder.asc(root.get(atributo)) : builder.desc(root.get(atributo));
+			    ordenacoes.add(order);
+			}
+		}
+		criteriaQuery.orderBy(ordenacoes);
+	}
+	
+	public static long getTotalRegistros(Root<?> root, Predicate[] predicateArray, CriteriaBuilder builder, EntityManager manager) {
+		logger.debug("Calculando o total de registros que o filtro retornará.");
+		CriteriaQuery<Long> criteriaQuery = builder.createQuery(Long.class);
+		criteriaQuery.select(builder.count(criteriaQuery.from(root.getJavaType())));
+		criteriaQuery.where(predicateArray);
+		TypedQuery<Long> typedQueryTotal = manager.createQuery(criteriaQuery);
+		long totalRegistros = typedQueryTotal.getSingleResult();
+		logger.debug("O filtro retornará {} registros.", totalRegistros);	
+		return totalRegistros;
+	}
+
+	public static Long getRowCount(CriteriaQuery<?> criteriaQuery,CriteriaBuilder criteriaBuilder,Root<?> root, EntityManager manager){
+		CriteriaQuery<Long> countCriteria = criteriaBuilder.createQuery(Long.class);
+		Root<?> entityRoot = countCriteria.from(root.getJavaType());
+		entityRoot.alias(root.getAlias());
+		doJoins(root.getJoins(),entityRoot);
+		countCriteria.select(criteriaBuilder.count(entityRoot));
+		countCriteria.where(criteriaQuery.getRestriction());
+		return manager.createQuery(countCriteria).getSingleResult();
+	}
+	
+	private static void doJoins(Set<? extends Join<?, ?>> joins,Root<?> root_){
+		for(Join<?,?> join: joins){
+			Join<?,?> joined = root_.join(join.getAttribute().getName(),join.getJoinType());
+			doJoins(join.getJoins(), joined);
+		}
+	}
+	
+	private static void doJoins(Set<? extends Join<?, ?>> joins,Join<?,?> root_){
+		for(Join<?,?> join: joins){
+			Join<?,?> joined = root_.join(join.getAttribute().getName(),join.getJoinType());
+			doJoins(join.getJoins(),joined);
+		}
+	}
+}

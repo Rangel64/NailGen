@@ -1,0 +1,1 @@
+ALTER TABLE pessoa ADD COLUMN status text DEFAULT 'ATIVO';
