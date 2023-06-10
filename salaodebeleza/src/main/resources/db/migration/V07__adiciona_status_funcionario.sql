@@ -1,1 +1,1 @@
-ALTER TABLE funcionario ADD COLUMN status text DEFAULT 'ATIVO';
+ALTER TABLE public.funcionario ADD COLUMN status text DEFAULT 'ATIVO';

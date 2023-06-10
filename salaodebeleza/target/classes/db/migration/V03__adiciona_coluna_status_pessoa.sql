@@ -1,1 +1,1 @@
-ALTER TABLE pessoa ADD COLUMN status text DEFAULT 'ATIVO';
+ALTER TABLE public.pessoa ADD COLUMN status text DEFAULT 'ATIVO';

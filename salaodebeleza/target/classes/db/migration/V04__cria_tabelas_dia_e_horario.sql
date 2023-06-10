@@ -1,14 +1,9 @@
-CREATE TABLE dia
+CREATE TABLE public.dia
 (   
     codigo serial NOT NULL,
+    codigo_funcionario integer,
     nome_dia text,
-    codigo_funcionario serial,
-    PRIMARY KEY (codigo)
-);
 
-CREATE TABLE horarios
-(   
-    codigo serial NOT NULL,
     h_7 boolean,
     h_8 boolean,
     h_9 boolean,
@@ -20,6 +15,6 @@ CREATE TABLE horarios
     h_15 boolean,
     h_16 boolean,
     h_17 boolean,
-    codigo_dia serial,
+
     PRIMARY KEY (codigo)
 );

@@ -1,7 +1,5 @@
-ALTER TABLE dia
+ALTER TABLE public.dia
     ADD FOREIGN KEY (codigo_funcionario)
-    REFERENCES funcionario (codigo);
+    REFERENCES funcionario (codigo)
+    NOT VALID;
 
-ALTER TABLE horarios
-    ADD FOREIGN KEY (codigo_dia)
-    REFERENCES dia (codigo); 

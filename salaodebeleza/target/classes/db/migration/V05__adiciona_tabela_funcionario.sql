@@ -1,4 +1,4 @@
-CREATE TABLE funcionario
+CREATE TABLE public.funcionario
 (   
     codigo serial NOT NULL,
     nome text,

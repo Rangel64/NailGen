@@ -1,6 +1,8 @@
 package web.salaodebeleza.model;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -8,95 +10,81 @@ import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.JoinTable;
+import jakarta.persistence.ManyToMany;
 import jakarta.persistence.SequenceGenerator;
 import jakarta.persistence.Table;
+import jakarta.validation.constraints.Size;
 
 @Entity
-@Table
+@Table(name = "servico")
 public class ServicoSalao implements Serializable {
     private static final long serialVersionUID = 1L;
 	
 	@Id
-	@SequenceGenerator(name="gerador2", sequenceName="pessoa_codigo_seq", allocationSize=1)
-	@GeneratedValue(generator="gerador2", strategy=GenerationType.SEQUENCE)
+	@SequenceGenerator(name="gerador4", sequenceName="pessoa_codigo_seq", allocationSize=1)
+	@GeneratedValue(generator="gerador4", strategy=GenerationType.SEQUENCE)
     private Long codigo;
     private String nome;
     private String descricao;
     @Enumerated(EnumType.STRING)
     private Status status = Status.ATIVO;
 
+    @ManyToMany
+    @JoinTable(name = "servico_funcionario", joinColumns = @JoinColumn(name = "codigo_servico"), inverseJoinColumns = @JoinColumn(name = "codigo_funcionario"))
+    @Size(min = 1, message="O servico deve ter pelo menos um funcionario")
+    private List<Funcionario> listaFuncionario = new ArrayList<>();
+
     public static long getSerialversionuid() {
         return serialVersionUID;
     }
+
     public Long getCodigo() {
         return codigo;
     }
+
     public void setCodigo(Long codigo) {
         this.codigo = codigo;
     }
+
     public String getNome() {
         return nome;
     }
+
     public void setNome(String nome) {
         this.nome = nome;
     }
+
     public String getDescricao() {
         return descricao;
     }
+
     public void setDescricao(String descricao) {
         this.descricao = descricao;
     }
+
     public Status getStatus() {
         return status;
     }
+
     public void setStatus(Status status) {
         this.status = status;
     }
-    
+
+    public List<Funcionario> getListaFuncionario() {
+        return listaFuncionario;
+    }
+
+    public void setListaFuncionario(List<Funcionario> listaFuncionario) {
+        this.listaFuncionario = listaFuncionario;
+    }
+
     @Override
     public String toString() {
         return "ServicoSalao [codigo=" + codigo + ", nome=" + nome + ", descricao=" + descricao + ", status=" + status
-                + "]";
+                + ", listaFuncionario=" + listaFuncionario + "]";
     }
-
-    @Override
-    public int hashCode() {
-        final int prime = 31;
-        int result = 1;
-        result = prime * result + ((codigo == null) ? 0 : codigo.hashCode());
-        result = prime * result + ((nome == null) ? 0 : nome.hashCode());
-        result = prime * result + ((descricao == null) ? 0 : descricao.hashCode());
-        result = prime * result + ((status == null) ? 0 : status.hashCode());
-        return result;
-    }
-
-    @Override
-    public boolean equals(Object obj) {
-        if (this == obj)
-            return true;
-        if (obj == null)
-            return false;
-        if (getClass() != obj.getClass())
-            return false;
-        ServicoSalao other = (ServicoSalao) obj;
-        if (codigo == null) {
-            if (other.codigo != null)
-                return false;
-        } else if (!codigo.equals(other.codigo))
-            return false;
-        if (nome == null) {
-            if (other.nome != null)
-                return false;
-        } else if (!nome.equals(other.nome))
-            return false;
-        if (descricao == null) {
-            if (other.descricao != null)
-                return false;
-        } else if (!descricao.equals(other.descricao))
-            return false;
-        if (status != other.status)
-            return false;
-        return true;
-    }
-   
+  
+    
 }

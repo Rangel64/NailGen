@@ -10,7 +10,6 @@ import web.salaodebeleza.repository.FuncionarioRepository;
 @Service
 public class FuncionarioService {
 
-
     @Autowired
     private FuncionarioRepository funcionarioRepository;
 

@@ -29,8 +29,8 @@ public class Usuario implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@SequenceGenerator(name="gerador55", sequenceName="usuario_codigo_seq", allocationSize=1)
-	@GeneratedValue(generator="gerador55", strategy=GenerationType.SEQUENCE)
+	@SequenceGenerator(name="gerador5", sequenceName="usuario_codigo_seq", allocationSize=1)
+	@GeneratedValue(generator="gerador5", strategy=GenerationType.SEQUENCE)
 	private Long codigo;
 	@NotBlank(message = "O nome do usuário é obrigatório")
 	private String nome;
