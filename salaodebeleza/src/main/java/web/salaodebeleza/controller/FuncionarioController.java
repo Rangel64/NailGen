@@ -19,11 +19,9 @@ import jakarta.servlet.http.HttpServletRequest;
 import web.salaodebeleza.ajax.NotificacaoAlertify;
 import web.salaodebeleza.ajax.TipoNotificaoAlertify;
 import web.salaodebeleza.filter.FuncionarioFilter;
-import web.salaodebeleza.model.Dia;
 import web.salaodebeleza.model.Funcionario;
 import web.salaodebeleza.pagination.PageWrapper;
 import web.salaodebeleza.repository.FuncionarioRepository;
-import web.salaodebeleza.service.DiaService;
 import web.salaodebeleza.service.FuncionarioService;
 
 @Controller
@@ -38,8 +36,8 @@ public class FuncionarioController {
     @Autowired
     private FuncionarioService funcionarioService;
 
-    @Autowired
-    private DiaService diaService;
+    // @Autowired
+    // private DiaService diaService;
 
     @GetMapping("/cadastrar")
     public String abrirCadastro(Funcionario funcionario) {
@@ -50,19 +48,19 @@ public class FuncionarioController {
     public String cadastrar(Funcionario funcionario) {
         
         
-        logger.info("codigo:",funcionario.toString());
+        // logger.info("codigo:",funcionario.toString());
 
         if(funcionario!=null){
-            String semana[] = {"segunda","terca","quarta","quinta","sexta"};
-            Dia dia;
+            // String semana[] = {"segunda","terca","quarta","quinta","sexta"};
+            // Dia dia;
             funcionarioService.salvar(funcionario);
-            for (int i = 0; i < 5; i++) {
-                dia = new Dia();
-                dia.setFuncionario(funcionario);
-                dia.setNome_dia(semana[i]);
-                logger.info("codigo:",dia.getFuncionario().getCodigo());
-                diaService.salvar(dia);
-            }
+            // for (int i = 0; i < 5; i++) {
+            //     dia = new Dia();
+            //     dia.setFuncionario(funcionario);
+            //     dia.setNome_dia(semana[i]);
+            //     logger.info("codigo:",dia.getFuncionario().getCodigo());
+            //     diaService.salvar(dia);
+            // }
         }
 
         return "redirect:/funcionarios/mostrarmensagemcadastrook";

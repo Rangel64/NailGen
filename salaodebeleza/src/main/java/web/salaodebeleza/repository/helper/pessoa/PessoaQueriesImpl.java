@@ -21,7 +21,7 @@ import web.salaodebeleza.model.Pessoa;
 import web.salaodebeleza.model.Status;
 import web.salaodebeleza.repository.pagination.PaginacaoUtil;
 
-public class PessoaQueriesImpl implements PessoaQueries {
+public class PessoaQueriesImpl implements PessoaQueries  {
 
     @PersistenceContext
     private EntityManager manager;

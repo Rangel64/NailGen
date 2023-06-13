@@ -2,7 +2,7 @@ CREATE TABLE public.dia
 (   
     codigo serial NOT NULL,
     codigo_funcionario integer,
-    nome_dia text,
+    data_agendamento date,
 
     h_7 boolean,
     h_8 boolean,

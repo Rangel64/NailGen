@@ -12,14 +12,22 @@
 
 		<!-- conteudo principal -->
 		<main class="mt-5 p-4 pt-5">
-			<div class="container-fluid">					
+			<div class="container-fluid">
+									
 				<form th:action="@{/servicos/cadastrar}" method="POST">
-					<input type="hidden" th:field="${servico.codigo}">
+					<input type="hidden" th:field="${servicoSalao.codigo}">
                     <label for="nome" class="form-label">Nome:</label>
-                    <input type="text" th:field="${servico.nome}" class="form-control">
-                    <label for="descricao" class="form-label">Desciçao:</label>
-                    <input type="text" th:field="${servico.descricao}" class="form-control">
-                    <input type="submit" value="Cadastrar" class="btn btn-primary mt-3">
+                    <input type="text" th:field="${servicoSalao.nome}" class="form-control">
+                    <label for="cpf" class="form-label">Descricao:</label>
+                    <input type="text" th:field="${servicoSalao.descricao}" class="form-control">
+
+					<label for="funcionarios" class="form-label mt-3">Funcionarios:</label>
+					<div th:each="funcionario: ${funcionarios}" class="form-check">
+						<input type="checkbox" th:field="*{servicoSalao.funcionarios}" th:value="${funcionario.codigo}" class="form-check-input">
+						<label th:for="${#ids.prev('funcionarios')}" th:text="${funcionario.nome}" class="form-check-label">Texto checkbox 1</label>
+					</div>
+
+					<input type="submit" value="Cadastrar" class="btn btn-primary mt-3">
                 </form>
 
 				<div th:if="${notificacao != null}" th:object="${notificacao}">
@@ -27,9 +35,11 @@
 					<input type="hidden" id="tipo" th:value="*{tipo}">
 					<input type="hidden" id="intervalo" th:value="*{intervalo}">
 				</div>
+				
 			</div>
 		</main>
 		<!-- !conteudo principal -->
+
 	</div>
 
 </body>

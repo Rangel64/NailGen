@@ -4,7 +4,7 @@ CREATE TABLE public.servico
 (
     codigo bigserial NOT NULL,
     nome text,
-    descricao text,
+    descricao text,  
     PRIMARY KEY (codigo)
 );
 
