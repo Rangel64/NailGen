@@ -29,9 +29,9 @@
 						<div th:if="${uso == 'pessoas'}">
 							<th scope="col" colspan="2">Operação</th>
 						</div>
-						<div th:if="${uso == 'aplicacoes'}">
+						<div th:if="${uso == 'agendamentos'}">
 							<th scope="col" colspan="1">Operação</th>
-						</div>
+						</div>	
 					</tr>
 					<tr th:each="pessoa : ${pagina.conteudo}">
 						<td th:text="${pessoa.codigo}"></td>
@@ -58,9 +58,9 @@
 								</form>
 							</td>
 						</div>
-						<div th:if="${uso == 'aplicacoes'}">
+						<div th:if="${uso == 'agendamentos'}">
 							<td>
-								<form th:action="@{/aplicacoes/escolherpessoa}" method="POST">
+								<form th:action="@{/agendamentos/escolherpessoa}" method="POST">
 									<input type="hidden" name="codigo" th:value="${pessoa.codigo}">
 									<button type="submit" class="btn btn-primary">
 										Escolher

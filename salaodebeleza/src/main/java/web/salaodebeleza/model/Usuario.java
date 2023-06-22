@@ -50,7 +50,6 @@ public class Usuario implements Serializable {
 	@NotNull(message = "A data de nascimento do usuário é obrigatória")
 	private LocalDate dataNascimento;
 	
-
 	private boolean ativo;
 	@ManyToMany
 	@JoinTable(name = "usuario_papel", joinColumns = @JoinColumn(name = "codigo_usuario"), inverseJoinColumns = @JoinColumn(name = "codigo_papel"))

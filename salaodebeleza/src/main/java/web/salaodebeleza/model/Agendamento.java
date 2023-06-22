@@ -21,6 +21,10 @@ public class Agendamento {
 	@GeneratedValue(generator="gerador7", strategy=GenerationType.SEQUENCE)
 	private Long codigo;
     
+    @JoinColumn(name="codigo_cliente")
+    @ManyToOne
+    private Pessoa cliente;
+
     @JoinColumn(name="codigo_dia_agendamento")
     @ManyToOne(fetch = FetchType.LAZY)
     private Dia codigo_dia_agendamento;

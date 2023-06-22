@@ -27,6 +27,9 @@
 						<div th:if="${uso == 'servicos'}">
 							<th scope="col" colspan="2">Operação</th>
 						</div>
+						<div th:if="${uso == 'agendamentos'}">
+							<th scope="col" colspan="1">Operação</th>
+						</div>
 					</tr>
 					<tr th:each="servicoSalao : ${pagina.conteudo}">
 						<td th:text="${servicoSalao.codigo}"></td>
@@ -52,6 +55,16 @@
 								</form>
 							</td>
 							
+						</div>
+						<div th:if="${uso == 'agendamentos'}">
+							<td>
+								<form th:action="@{/agendamentos/escolherservico}" method="POST">
+									<input type="hidden" name="codigo" th:value="${servicoSalao.codigo}">
+									<button type="submit" class="btn btn-primary">
+										Escolher
+									</button>
+								</form>
+							</td>
 						</div>
 						
 					</tr>

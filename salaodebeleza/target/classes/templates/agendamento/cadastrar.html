@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="pt-BR" layout:decorate="~{layout/layoutpadrao}" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
+<title>Cadastrar Pessoa</title>
+</head>
+<body>
+	<div layout:fragment="conteudo">
+
+		<div th:replace="~{layout/fragments/sidebar :: sidebar(opcao='agendamentos')}"></div>
+
+		<!-- conteudo principal -->
+		<main class="mt-5 p-4 pt-5">
+			<div class="container-fluid">
+					
+				<form th:action="@{/agendamentos/escolherpessoa}" method="GET">
+					<input th:if="${session.agendamento.cliente== null}" type="submit" value="Escolher Cliente" class="btn btn-primary mt-3">
+					<input th:if="${session.agendamento.cliente!= null}" type="submit" value="Trocar Cliente" class="btn btn-primary mt-3">
+				</form>
+
+				<div th:if="${session.agendamento.cliente!= null}" class="mt-3">
+					<p th:text="'Nome: ' + ${session.agendamento.cliente.nome}"></p>
+					<p th:text="'CPF: ' + ${session.agendamento.cliente.cpf}"></p>
+				</div>
+
+                <form th:action="@{/agendamentos/escolherservico}" method="GET">
+					<input th:if="${session.agendamento.servico == null}" type="submit" value="Escolher Servico" class="btn btn-primary mt-3">
+					<input th:if="${session.agendamento.servico != null}" type="submit" value="Trocar Servico" class="btn btn-primary mt-3">
+				</form>
+				<div th:if="${session.agendamento.servico != null}" class="mt-3">
+					<p th:text="'Nome: ' + ${session.agendamento.servico.nome}"></p>
+				</div>
+
+				<div th:if="${notificacao != null}" th:object="${notificacao}">
+					<input type="hidden" id="mensagem" th:value="*{mensagem}">
+					<input type="hidden" id="tipo" th:value="*{tipo}">
+					<input type="hidden" id="intervalo" th:value="*{intervalo}">
+				</div>
+
+			</div>
+		</main>
+		<!-- !conteudo principal -->
+
+	</div>
+
+</body>
+</html>
