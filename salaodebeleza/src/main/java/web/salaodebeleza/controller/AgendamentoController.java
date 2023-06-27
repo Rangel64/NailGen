@@ -111,6 +111,7 @@ public class AgendamentoController {
     @PostMapping("/escolherservico")
     public String definirLote(Long codigo, Model model, HttpSession sessao) {
         ServicoSalao servico = servicoRepository.buscarComFuncionarios(codigo);
+        System.out.println(servico);
         if (servico != null) {
             Agendamento agendamento = (Agendamento) sessao.getAttribute("agendamento");
             agendamento.setServico(servico);
@@ -121,5 +122,4 @@ public class AgendamentoController {
             return "mostrarmensagem";
         }
     }
-
 }
