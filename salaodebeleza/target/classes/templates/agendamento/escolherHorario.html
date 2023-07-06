@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="pt-BR" layout:decorate="~{layout/layoutpadrao}" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
+<title>Cadastrar Pessoa</title>
+</head>
+<body>
+	<div layout:fragment="conteudo">
+
+		<div th:replace="~{layout/fragments/sidebar :: sidebar(opcao='agendamentos')}"></div>
+
+		<!-- conteudo principal -->
+		<main class="mt-5 p-4 pt-5">
+			<div class="container-fluid">
+					
+                <form th:action="@{/agendamentos/escolherhorario}" method="Post">
+                    
+					<input type="hidden" th:field="${diaAgendamento.codigo}" th:value = "${diaAgendamento.codigo}">
+                    <label for="dataAgendamento" class="form-label" th:text="'Data de agendamento: ' + ${#temporals.format(diaAgendamento.dataAgendamento, 'dd/MM/yyyy')}"></label>
+                    <br>
+
+                    <label for="funcionario" class="form-label" th:text="'Funcionario: ' + ${diaAgendamento.funcionario.nome}"></label>
+                    <br>
+                    <label for="h_7" class="form-check-label">7h:</label>
+                    <input type="checkbox" th:field="${diaAgendamento.h_7}" class="form-check-input" th:value = "${diaAgendamento.h_7}" >
+                    <br>
+                    <label for="h_8" class="form-check-label">8h:</label>
+                    <input type="checkbox" th:field="${diaAgendamento.h_8}" class="form-check-input" th:value = "${diaAgendamento.h_8}">
+                    <br>
+                    <label for="h_9" class="form-check-label">9h:</label>
+                    <input type="checkbox" th:field="${diaAgendamento.h_9}" class="form-check-input" th:value = "${diaAgendamento.h_9}">
+                    <br>
+                    <label for="h_10" class="form-check-label">10h:</label>
+                    <input type="checkbox" th:field="${diaAgendamento.h_10}" class="form-check-input" th:value = "${diaAgendamento.h_10}">
+                    <br>
+                    <label for="h_11" class="form-check-label">11h:</label>
+                    <input type="checkbox" th:field="${diaAgendamento.h_11}" class="form-check-input" th:value = "${diaAgendamento.h_11}">
+                    <br>
+                    <label for="h_12" class="form-check-label">12h:</label>
+                    <input type="checkbox" th:field="${diaAgendamento.h_12}" class="form-check-input" th:value = "${diaAgendamento.h_12}">
+                    <br>
+                    <label for="h_13" class="form-check-label">13h:</label>
+                    <input type="checkbox" th:field="${diaAgendamento.h_13}" class="form-check-input" th:value = "${diaAgendamento.h_13}">
+                    <br>
+                    <label for="h_14" class="form-check-label">14h:</label>
+                    <input type="checkbox" th:field="${diaAgendamento.h_14}" class="form-check-input" th:value = "${diaAgendamento.h_14}">
+                    <br>
+                    <label for="h_15" class="form-check-label">15h:</label>
+                    <input type="checkbox" th:field="${diaAgendamento.h_15}" class="form-check-input" th:value = "${diaAgendamento.h_15}">
+                    <br>
+                    <label for="h_16" class="form-check-label">16h:</label>
+                    <input type="checkbox" th:field="${diaAgendamento.h_16}" class="form-check-input" th:value = "${diaAgendamento.h_16}">
+                    <br>
+                    <label for="h_17" class="form-check-label">17h:</label>
+                    <input type="checkbox" th:field="${diaAgendamento.h_17}" class="form-check-input" th:value = "${diaAgendamento.h_17}">
+                    <br>
+					<input type="submit" value="Confirmar Horario" class="btn btn-primary mt-3">
+
+                </form>
+
+				<div th:if="${notificacao != null}" th:object="${notificacao}">
+					<input type="hidden" id="mensagem" th:value="*{mensagem}">
+					<input type="hidden" id="tipo" th:value="*{tipo}">
+					<input type="hidden" id="intervalo" th:value="*{intervalo}">
+				</div>
+
+			</div>
+		</main>
+		<!-- !conteudo principal -->
+
+	</div>
+
+</body>
+</html>

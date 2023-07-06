@@ -1,0 +1,1 @@
+ALTER TABLE public.servico ADD COLUMN status text DEFAULT 'ATIVO';

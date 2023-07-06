@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="pt-BR" layout:decorate="~{layout/layoutpadrao}" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
+<title>Cadastrar Pessoa</title>
+</head>
+<body>
+	<div layout:fragment="conteudo">
+
+		<div th:replace="~{layout/fragments/sidebar :: sidebar(opcao=${uso})}"></div>
+
+		<!-- conteudo principal -->
+		<main class="mt-5 p-4 pt-5">
+			<div class="container-fluid">
+									
+				<form th:action="@{__${url}__}" method="GET">
+					<label for="codigo" class="form-label">Código:</label>
+                    <input type="number" id="codigo" name="codigo" class="form-control">
+                    <label for="nome" class="form-label">Nome:</label>
+                    <input type="text" class="form-control">
+                    <label for="cpf" class="form-label">Descricao:</label>
+                    <input type="text" class="form-control">
+					<label for="funcionarios" class="form-label mt-3">Funcionarios:</label>
+					<div th:each="funcionario: ${funcionarios}" class="form-check">
+						<input type="checkbox" class="form-check-input">
+						<label th:text="${funcionario.nome}" class="form-check-label">Texto checkbox 1</label>
+
+					</div>
+
+					<input type="submit" value="Pesquisar" class="btn btn-primary mt-3">
+                </form>
+
+				<div th:if="${notificacao != null}" th:object="${notificacao}">
+					<input type="hidden" id="mensagem" th:value="*{mensagem}">
+					<input type="hidden" id="tipo" th:value="*{tipo}">
+					<input type="hidden" id="intervalo" th:value="*{intervalo}">
+				</div>
+				
+			</div>
+		</main>
+		<!-- !conteudo principal -->
+
+	</div>
+
+</body>
+</html>
