@@ -1,1 +1,0 @@
-ALTER TABLE public.pessoa ADD COLUMN status text DEFAULT 'ATIVO';

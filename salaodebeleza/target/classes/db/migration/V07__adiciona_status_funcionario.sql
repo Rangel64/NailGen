@@ -1,1 +1,0 @@
-ALTER TABLE public.funcionario ADD COLUMN status text DEFAULT 'ATIVO';
