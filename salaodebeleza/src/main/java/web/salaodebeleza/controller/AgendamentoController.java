@@ -168,7 +168,7 @@ public class AgendamentoController {
     public String escolhaHorario(Dia dia, HttpSession sessao){
         // comparar esse dia com o da sesdsao se existir
         // se nao existir na sessao pegar o horario que ele marcou
-        // se existir pegar a diferenca
+        // se existir pegar a diferencagit c
         // e colocar num attributo
         // model.addAttribute("horario", VALOR);
         Agendamento agendamento = (Agendamento)sessao.getAttribute("agendamento");
