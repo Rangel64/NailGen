@@ -10,4 +10,5 @@ import web.salaodebeleza.repository.helper.funcionario.FuncionarioQueries;
 
 public interface FuncionarioRepository extends JpaRepository<Funcionario,Long>, FuncionarioQueries{
     public List<Funcionario> findByStatus(Status status);
+    public Funcionario findByCodigo(Long codigo);
 }

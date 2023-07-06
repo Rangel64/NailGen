@@ -21,6 +21,7 @@
                     <label for="cpf" class="form-label">Descricao:</label>
                     <input type="text" th:field="*{descricao}" class="form-control">
                     <label for="funcionarios" class="form-label mt-3">Funcionarios:</label>
+					
 					<div th:each="funcionario: ${funcionarios}" class="form-check">
 						<input type="checkbox" th:field="*{funcionarios}" th:value="${funcionario.codigo}" class="form-check-input">
 						<label  th:text="${funcionario.nome}" class="form-check-label">Texto checkbox 1</label>

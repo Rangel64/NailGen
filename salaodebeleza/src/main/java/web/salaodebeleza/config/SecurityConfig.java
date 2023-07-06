@@ -25,12 +25,7 @@ public class SecurityConfig {
 			.authorizeHttpRequests(configurer -> configurer
 				// Qualquer um pode fazer requisições para essas URLs
 				.requestMatchers("/css/**", "/js/**", "/images/**", "/", "/index.html").permitAll()
-				// .requestMatchers("/css/**", "/js/**", "/images/**").permitAll()
-				// Um usuário autenticado e com o papel ADMIN pode fazer requisições para essas URLs
-				.requestMatchers("/vacinas/cadastrar").hasRole("ADMIN")
-				// .requestMatchers("URL").hasAnyRole("ADMIN", "USUARIO")
 				.requestMatchers("/usuarios/cadastrar").hasRole("ADMIN")
-				// Todas as outras requisições exigem um usuário autenticado
 				.anyRequest().authenticated()
 			)
 			.formLogin(form -> form

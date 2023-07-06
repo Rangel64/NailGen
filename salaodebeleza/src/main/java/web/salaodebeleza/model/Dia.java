@@ -24,10 +24,9 @@ public class Dia {
 	@GeneratedValue(generator="gerador1", strategy=GenerationType.SEQUENCE)
 
     private Long codigo;
-    private String nome_dia;
 
     @Column(name = "data_agendamento")
-    private LocalDate data_agendamento;
+    private LocalDate dataAgendamento;
 
     private Boolean h_7 = false;
     private Boolean h_8 = false;

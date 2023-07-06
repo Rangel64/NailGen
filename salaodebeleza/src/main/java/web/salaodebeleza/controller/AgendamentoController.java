@@ -14,6 +14,7 @@ import org.springframework.data.web.SortDefault;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
@@ -22,15 +23,16 @@ import jakarta.servlet.http.HttpSession;
 import web.salaodebeleza.filter.PessoaFilter;
 import web.salaodebeleza.filter.ServicoSalaoFilter;
 import web.salaodebeleza.model.Agendamento;
+import web.salaodebeleza.model.Dia;
 import web.salaodebeleza.model.Funcionario;
 import web.salaodebeleza.model.Pessoa;
 import web.salaodebeleza.model.ServicoSalao;
 import web.salaodebeleza.model.Status;
 import web.salaodebeleza.pagination.PageWrapper;
+import web.salaodebeleza.repository.DiaRepository;
 import web.salaodebeleza.repository.FuncionarioRepository;
 import web.salaodebeleza.repository.PessoaRepository;
 import web.salaodebeleza.repository.ServicoRepository;
-
 
 @Controller
 @RequestMapping("/agendamentos")
@@ -46,9 +48,13 @@ public class AgendamentoController {
     @Autowired
     ServicoRepository servicoRepository;
 
+    @Autowired 
+    DiaRepository diaRepository;
+
     @RequestMapping("/abrircadastrar")
     public String abrirCadastrar(HttpSession sessao){
-        sessao.setAttribute("agendamento", new Agendamento());
+        Agendamento agendamento = new Agendamento();
+        sessao.setAttribute("agendamento", agendamento);
         return("agendamento/cadastrar");
     }
 
@@ -109,7 +115,7 @@ public class AgendamentoController {
     }
 
     @PostMapping("/escolherservico")
-    public String definirLote(Long codigo, Model model, HttpSession sessao) {
+    public String definirServico(Long codigo, Model model, HttpSession sessao, Dia dia, Funcionario funcionario) {
         ServicoSalao servico = servicoRepository.buscarComFuncionarios(codigo);
         System.out.println(servico);
         if (servico != null) {
@@ -122,4 +128,31 @@ public class AgendamentoController {
             return "mostrarmensagem";
         }
     }
+
+    @GetMapping("/abrirescolherhorario")
+    public String abrirEscolhaHorario(Model model, HttpSession sessao,Dia dia, Funcionario funcionario){
+        logger.info("teste:{}", dia.getDataAgendamento());
+        Funcionario funcionarioDia = funcionarioRepository.findByCodigo(funcionario.getCodigo());
+        Dia diaHorario = diaRepository.findByDataAgendamentoAndFuncionario(dia.getDataAgendamento(), funcionario);
+        if(diaHorario==null){
+            logger.info("testediaHorario null");
+            Dia diaAgendamento = new Dia();
+            diaAgendamento.setDataAgendamento(dia.getDataAgendamento());
+            diaAgendamento.setFuncionario(funcionarioDia);
+            model.addAttribute("diaAgendamento", diaAgendamento);
+            return "agendamento/escolherHorario";
+        }
+        else{
+            logger.info("testediaHorario notnull");
+            model.addAttribute("diaAgendamento", diaHorario);
+            return "agendamento/escolherHorario";
+        }
+    }
+
+    @PostMapping("/escolherhorario")
+    public String escolhaHorario(@ModelAttribute Dia dia, HttpSession sessao){
+        logger.info("testediaHorario {}",dia);
+        return "agendamento/escolherHorario";
+    }
+
 }
