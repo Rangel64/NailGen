@@ -14,12 +14,13 @@ import org.springframework.data.web.SortDefault;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
+import web.salaodebeleza.ajax.NotificacaoAlertify;
+import web.salaodebeleza.ajax.TipoNotificaoAlertify;
 import web.salaodebeleza.filter.PessoaFilter;
 import web.salaodebeleza.filter.ServicoSalaoFilter;
 import web.salaodebeleza.model.Agendamento;
@@ -33,6 +34,8 @@ import web.salaodebeleza.repository.DiaRepository;
 import web.salaodebeleza.repository.FuncionarioRepository;
 import web.salaodebeleza.repository.PessoaRepository;
 import web.salaodebeleza.repository.ServicoRepository;
+import web.salaodebeleza.service.AgendamentoService;
+import web.salaodebeleza.service.DiaService;
 
 @Controller
 @RequestMapping("/agendamentos")
@@ -50,6 +53,14 @@ public class AgendamentoController {
 
     @Autowired 
     DiaRepository diaRepository;
+
+    @Autowired
+    AgendamentoService agendamentoService;
+
+    @Autowired
+    DiaService diaService;
+
+
 
     @RequestMapping("/abrircadastrar")
     public String abrirCadastrar(HttpSession sessao){
@@ -133,6 +144,7 @@ public class AgendamentoController {
     public String abrirEscolhaHorario(Model model, HttpSession sessao,Dia dia, Funcionario funcionario){
         logger.info("teste:{}", dia.getDataAgendamento());
         Funcionario funcionarioDia = funcionarioRepository.findByCodigo(funcionario.getCodigo());
+        sessao.setAttribute("funcionarioEscolhido", funcionarioDia);
         Dia diaHorario = diaRepository.findByDataAgendamentoAndFuncionario(dia.getDataAgendamento(), funcionario);
         if(diaHorario==null){
             logger.info("testediaHorario null");
@@ -140,19 +152,63 @@ public class AgendamentoController {
             diaAgendamento.setDataAgendamento(dia.getDataAgendamento());
             diaAgendamento.setFuncionario(funcionarioDia);
             model.addAttribute("diaAgendamento", diaAgendamento);
+
+            //colocar na sessao
             return "agendamento/escolherHorario";
         }
         else{
             logger.info("testediaHorario notnull");
+            diaHorario.setFuncionario(funcionarioDia);
             model.addAttribute("diaAgendamento", diaHorario);
             return "agendamento/escolherHorario";
         }
     }
 
     @PostMapping("/escolherhorario")
-    public String escolhaHorario(@ModelAttribute Dia dia, HttpSession sessao){
-        logger.info("testediaHorario {}",dia);
-        return "agendamento/escolherHorario";
+    public String escolhaHorario(Dia dia, HttpSession sessao){
+        // comparar esse dia com o da sesdsao se existir
+        // se nao existir na sessao pegar o horario que ele marcou
+        // se existir pegar a diferenca
+        // e colocar num attributo
+        // model.addAttribute("horario", VALOR);
+        Agendamento agendamento = (Agendamento)sessao.getAttribute("agendamento");
+        Funcionario funcionario = (Funcionario)sessao.getAttribute("funcionarioEscolhido");
+        dia.setFuncionario(funcionario);
+        agendamento.setFuncionario(funcionario);
+        agendamento.setCodigo_dia_agendamento(dia);
+        // logger.info("testediaHorario {}",dia);
+        return "agendamento/cadastrar";
     }
 
+    @PostMapping("/cadastrar")
+    public String cadastrar(HttpSession sessao, Model model){
+        Agendamento agendamento = (Agendamento)sessao.getAttribute("agendamento");
+        if(agendamento!=null){
+            if(agendamento.getCliente()!=null && agendamento.getFuncionario()!=null && agendamento.getServico()!=null && agendamento.getCodigo_dia_agendamento()!=null){
+                diaService.salvar(agendamento.getCodigo_dia_agendamento());
+                agendamentoService.salvar(agendamento);
+                sessao.removeAttribute("agendamento");
+                sessao.removeAttribute("funcionarioEscolhido");
+                return "redirect:/agendamentos/mostrarmensagemcadastrorok";
+            }
+            else{
+                NotificacaoAlertify notificacao = new NotificacaoAlertify("Agendamento cadastrado com falhou!",TipoNotificaoAlertify.ERRO);
+                model.addAttribute("notificacao", notificacao);
+                return"agendamento/cadastrar";
+            }
+        }
+        else{
+            return"agendamento/abrircadastrar";
+        }
+
+    }
+
+   
+    @GetMapping("/mostrarmensagemcadastrorok")
+    public String mostrarMensagemCadastroOK(Model model) {
+        NotificacaoAlertify notificacao = new NotificacaoAlertify("Agendamento cadastrado com sucesso!",TipoNotificaoAlertify.SUCESSO);
+        model.addAttribute("notificacao", notificacao);
+
+        return "forward:/agendamentos/abrircadastrar";
+    }
 }

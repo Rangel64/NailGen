@@ -14,46 +14,47 @@
 		<main class="mt-5 p-4 pt-5">
 			<div class="container-fluid">
 					
-                <form th:action="@{/agendamentos/escolherhorario}" method="Post">
+                <form th:action="@{/agendamentos/escolherhorario}" method="POST">
                     
 					<input type="hidden" th:field="${diaAgendamento.codigo}" th:value = "${diaAgendamento.codigo}">
                     <label for="dataAgendamento" class="form-label" th:text="'Data de agendamento: ' + ${#temporals.format(diaAgendamento.dataAgendamento, 'dd/MM/yyyy')}"></label>
                     <br>
-
+                    <input type="hidden" th:field="${diaAgendamento.dataAgendamento}" th:value = "${diaAgendamento.dataAgendamento}" >
                     <label for="funcionario" class="form-label" th:text="'Funcionario: ' + ${diaAgendamento.funcionario.nome}"></label>
+                   
                     <br>
                     <label for="h_7" class="form-check-label">7h:</label>
-                    <input type="checkbox" th:field="${diaAgendamento.h_7}" class="form-check-input" th:value = "${diaAgendamento.h_7}" >
+                    <input th:hidden= "${diaAgendamento.h_7}" type="checkbox" th:field="${diaAgendamento.h_7}" class="form-check-input" th:value = "${diaAgendamento.h_7}" >
                     <br>
                     <label for="h_8" class="form-check-label">8h:</label>
-                    <input type="checkbox" th:field="${diaAgendamento.h_8}" class="form-check-input" th:value = "${diaAgendamento.h_8}">
+                    <input th:hidden= "${diaAgendamento.h_8}" type="checkbox" th:field="${diaAgendamento.h_8}" class="form-check-input" th:value = "${diaAgendamento.h_8}">
                     <br>
                     <label for="h_9" class="form-check-label">9h:</label>
-                    <input type="checkbox" th:field="${diaAgendamento.h_9}" class="form-check-input" th:value = "${diaAgendamento.h_9}">
+                    <input th:hidden= "${diaAgendamento.h_9}" type="checkbox" th:field="${diaAgendamento.h_9}" class="form-check-input" th:value = "${diaAgendamento.h_9}">
                     <br>
                     <label for="h_10" class="form-check-label">10h:</label>
-                    <input type="checkbox" th:field="${diaAgendamento.h_10}" class="form-check-input" th:value = "${diaAgendamento.h_10}">
+                    <input th:hidden= "${diaAgendamento.h_10}" type="checkbox" th:field="${diaAgendamento.h_10}" class="form-check-input" th:value="${diaAgendamento.h_10}"/>
                     <br>
                     <label for="h_11" class="form-check-label">11h:</label>
-                    <input type="checkbox" th:field="${diaAgendamento.h_11}" class="form-check-input" th:value = "${diaAgendamento.h_11}">
+                    <input th:hidden= "${diaAgendamento.h_11}" type="checkbox" th:field="${diaAgendamento.h_11}" class="form-check-input" th:value = "${diaAgendamento.h_11}">
                     <br>
                     <label for="h_12" class="form-check-label">12h:</label>
-                    <input type="checkbox" th:field="${diaAgendamento.h_12}" class="form-check-input" th:value = "${diaAgendamento.h_12}">
+                    <input th:hidden= "${diaAgendamento.h_12}" type="checkbox" th:field="${diaAgendamento.h_12}" class="form-check-input" th:value = "${diaAgendamento.h_12}">
                     <br>
                     <label for="h_13" class="form-check-label">13h:</label>
-                    <input type="checkbox" th:field="${diaAgendamento.h_13}" class="form-check-input" th:value = "${diaAgendamento.h_13}">
+                    <input th:hidden= "${diaAgendamento.h_13}" type="checkbox" th:field="${diaAgendamento.h_13}" class="form-check-input" th:value = "${diaAgendamento.h_13}">
                     <br>
                     <label for="h_14" class="form-check-label">14h:</label>
-                    <input type="checkbox" th:field="${diaAgendamento.h_14}" class="form-check-input" th:value = "${diaAgendamento.h_14}">
+                    <input th:hidden= "${diaAgendamento.h_14}" type="checkbox" th:field="${diaAgendamento.h_14}" class="form-check-input" th:value = "${diaAgendamento.h_14}">
                     <br>
                     <label for="h_15" class="form-check-label">15h:</label>
-                    <input type="checkbox" th:field="${diaAgendamento.h_15}" class="form-check-input" th:value = "${diaAgendamento.h_15}">
+                    <input th:hidden= "${diaAgendamento.h_15}" type="checkbox" th:field="${diaAgendamento.h_15}" class="form-check-input" th:value = "${diaAgendamento.h_15}">
                     <br>
                     <label for="h_16" class="form-check-label">16h:</label>
-                    <input type="checkbox" th:field="${diaAgendamento.h_16}" class="form-check-input" th:value = "${diaAgendamento.h_16}">
+                    <input th:hidden= "${diaAgendamento.h_16}" type="checkbox" th:field="${diaAgendamento.h_16}" class="form-check-input" th:value = "${diaAgendamento.h_16}">
                     <br>
                     <label for="h_17" class="form-check-label">17h:</label>
-                    <input type="checkbox" th:field="${diaAgendamento.h_17}" class="form-check-input" th:value = "${diaAgendamento.h_17}">
+                    <input th:hidden= "${diaAgendamento.h_17}" type="checkbox" th:field="${diaAgendamento.h_17}" class="form-check-input" th:value = "${diaAgendamento.h_17}">
                     <br>
 					<input type="submit" value="Confirmar Horario" class="btn btn-primary mt-3">
 
