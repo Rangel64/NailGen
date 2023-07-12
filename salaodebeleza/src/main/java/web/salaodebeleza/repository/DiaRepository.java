@@ -1,8 +1,6 @@
 package web.salaodebeleza.repository;
 
 
-
-
 import java.time.LocalDate;
 
 import org.springframework.data.jpa.repository.JpaRepository;

@@ -24,16 +24,18 @@
 					<p th:text="'CPF: ' + ${session.agendamento.cliente.cpf}"></p>
 				</div>
 
-                <form th:action="@{/agendamentos/escolherservico}" method="GET">
-					<input th:if="${session.agendamento.servico == null}" type="submit" value="Escolher Servico" class="btn btn-primary mt-3">
-					<input th:if="${session.agendamento.servico != null}" type="submit" value="Trocar Servico" class="btn btn-primary mt-3">
-				</form>
-				<div th:if="${session.agendamento.servico != null}" class="mt-3">
-					<p th:text="'Nome: ' + ${session.agendamento.servico.nome}"></p>
+				<div th:if="${session.agendamento.cliente!= null}">
+					<form th:action="@{/agendamentos/escolherservico}" method="GET">
+						<input th:if="${session.agendamento.servico == null}" type="submit" value="Escolher Servico" class="btn btn-primary mt-3">
+						<input th:if="${session.agendamento.servico != null}" type="submit" value="Trocar Servico" class="btn btn-primary mt-3">
+					</form>
+					<div th:if="${session.agendamento.servico != null}" class="mt-3">
+						<p th:text="'Nome: ' + ${session.agendamento.servico.nome}"></p>
+					</div>
 				</div>
-				
 
-				<div th:if="${session.agendamento.servico != null and session.agendamento.funcionario==null} ">
+                
+				<div th:if="${session.agendamento.servico != null and session.agendamento.funcionario==null and session.agendamento.cliente != null} ">
 					<form action="/agendamentos/abrirescolherhorario" method="GET">
 						<label th:if="${session.agendamento.servico != null}" for="funcionarios" class="form-label mt-3">Funcionarios:</label>
 						<div th:if="${session.agendamento.servico != null}">
@@ -54,40 +56,31 @@
 				</div>
 				<div th:if="${session.agendamento.funcionario!=null} ">
 					<p th:text="'Funcionario escolhido: ' + ${session.agendamento.funcionario.nome}"></p>
-					<p th:text="'Data de agendamento: ' + ${#temporals.format(session.agendamento.codigo_dia_agendamento.dataAgendamento, 'dd/MM/yyyy')}"></p>
-					<label for="h_7" class="form-check-label">7h:</label>
-                    <input th:checked="${session.agendamento.codigo_dia_agendamento.h_7}" type="checkbox" class="form-check-input"  id="h_7" name="h_7" disabled = "disabled">
-                    <br>
-                    <label for="h_8" class="form-check-label">8h:</label>
-                    <input th:checked="${session.agendamento.codigo_dia_agendamento.h_8}" type="checkbox" class="form-check-input"  id="h_8" name="h_8" disabled = "disabled">
-                    <br>
-                    <label for="h_9" class="form-check-label">9h:</label>
-                    <input th:checked="${session.agendamento.codigo_dia_agendamento.h_9}" type="checkbox" class="form-check-input"  id="h_9" name="h_9" disabled = "disabled">
-                    <br>
-                    <label for="h_10" class="form-check-label">10h:</label>
-                    <input th:checked="${session.agendamento.codigo_dia_agendamento.h_10}" type="checkbox" class="form-check-input"  id="h_10" name="h_10" disabled = "disabled">
-                    <br>
-                    <label for="h_11" class="form-check-label">11h:</label>
-                    <input th:checked="${session.agendamento.codigo_dia_agendamento.h_11}" type="checkbox" class="form-check-input"  id="h_11" name="h_11" disabled = "disabled">
-                    <br>
-                    <label for="h_12" class="form-check-label">12h:</label>
-                    <input th:checked="${session.agendamento.codigo_dia_agendamento.h_12}" type="checkbox" class="form-check-input"  id="h_12" name="h_12" disabled = "disabled">
-                    <br>
-                    <label for="h_13" class="form-check-label">13h:</label>
-                    <input th:checked="${session.agendamento.codigo_dia_agendamento.h_13}" type="checkbox" class="form-check-input"  id="h_13" name="h_13" disabled = "disabled">
-                    <br>
-                    <label for="h_14" class="form-check-label">14h:</label>
-                    <input th:checked="${session.agendamento.codigo_dia_agendamento.h_14}" type="checkbox" class="form-check-input"  id="h_14" name="h_14" disabled = "disabled">
-					<br>
-                    <label for="h_15" class="form-check-label">15h:</label>
-                    <input th:checked="${session.agendamento.codigo_dia_agendamento.h_15}" type="checkbox" class="form-check-input"  id="h_15" name="h_15" disabled = "disabled">
-                    <br>
-                    <label for="h_16" class="form-check-label">16h:</label>
-                    <input th:checked="${session.agendamento.codigo_dia_agendamento.h_16}" type="checkbox" class="form-check-input"  id="h_16" name="h_16" disabled = "disabled">
-                    <br>
-                    <label for="h_17" class="form-check-label">17h:</label>
-                    <input th:checked="${session.agendamento.codigo_dia_agendamento.h_17}" type="checkbox" class="form-check-input"  id="h_17" name="h_17" disabled = "disabled">
-                    <br>
+					<p th:text="'Data de agendamento: ' + ${#temporals.format(session.agendamento.codigo_dia_agendamento_cliente.dataAgendamento, 'dd/MM/yyyy')}"></p>
+					<label th:if="${session.agendamento.codigo_dia_agendamento_cliente.h_7}" for="h_7" class="form-check-label">Horario marcado: 7 horas</label>
+					<br th:if="${session.agendamento.codigo_dia_agendamento_cliente.h_7}">
+					<label th:if="${session.agendamento.codigo_dia_agendamento_cliente.h_8}" for="h_8" class="form-check-label">Horario marcado: 8 horas</label>
+					<br th:if="${session.agendamento.codigo_dia_agendamento_cliente.h_8}">
+					<label th:if="${session.agendamento.codigo_dia_agendamento_cliente.h_9}" for="h_9" class="form-check-label">Horario marcado: 9 horas</label>
+					<br th:if="${session.agendamento.codigo_dia_agendamento_cliente.h_9}">
+					<label th:if="${session.agendamento.codigo_dia_agendamento_cliente.h_10}" for="h_10" class="form-check-label">Horario marcado: 10 horas</label>
+					<br th:if="${session.agendamento.codigo_dia_agendamento_cliente.h_10}">
+					<label th:if="${session.agendamento.codigo_dia_agendamento_cliente.h_11}" for="h_11" class="form-check-label">Horario marcado: 11 horas</label>
+					<br th:if="${session.agendamento.codigo_dia_agendamento_cliente.h_11}">
+					<label th:if="${session.agendamento.codigo_dia_agendamento_cliente.h_12}" for="h_12" class="form-check-label">Horario marcado: 12 horas</label>
+					<br th:if="${session.agendamento.codigo_dia_agendamento_cliente.h_12}">
+					<label th:if="${session.agendamento.codigo_dia_agendamento_cliente.h_13}" for="h_13" class="form-check-label">Horario marcado: 13 horas</label>
+					<br th:if="${session.agendamento.codigo_dia_agendamento_cliente.h_13}">
+					<label th:if="${session.agendamento.codigo_dia_agendamento_cliente.h_14}" for="h_14" class="form-check-label">Horario marcado: 14 horas</label>
+					<br th:if="${session.agendamento.codigo_dia_agendamento_cliente.h_14}">
+					<label th:if="${session.agendamento.codigo_dia_agendamento_cliente.h_15}" for="h_15" class="form-check-label">Horario marcado: 15 horas</label>
+					<br th:if="${session.agendamento.codigo_dia_agendamento_cliente.h_15}">
+					<label th:if="${session.agendamento.codigo_dia_agendamento_cliente.h_16}" for="h_16" class="form-check-label">Horario marcado: 16 horas</label>
+					<br th:if="${session.agendamento.codigo_dia_agendamento_cliente.h_16}">
+					<label th:if="${session.agendamento.codigo_dia_agendamento_cliente.h_17}" for="h_17" class="form-check-label">Horario marcado: 17 horas</label>
+					
+
+                    
 				</div>
 				
 				<div th:if="${session.agendamento.servico != null and session.agendamento.funcionario!=null and session.agendamento.cliente != null and session.agendamento.codigo_dia_agendamento != null} ">

@@ -43,8 +43,12 @@ button {
 
 .custom-sidebar {
   background-color: rgb(55, 55, 55); /* Substitua #FF0000 pela cor desejada */
-  margin-top: 3px;
+  
   /* z-index: -1; */
+}
+
+.mainBackgrownd{
+  background-color: rgb(108, 107, 107);
 }
 
 .bnt-color{

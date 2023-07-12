@@ -21,20 +21,25 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import web.salaodebeleza.ajax.NotificacaoAlertify;
 import web.salaodebeleza.ajax.TipoNotificaoAlertify;
+import web.salaodebeleza.filter.AgendamentoFilter;
 import web.salaodebeleza.filter.PessoaFilter;
 import web.salaodebeleza.filter.ServicoSalaoFilter;
 import web.salaodebeleza.model.Agendamento;
 import web.salaodebeleza.model.Dia;
+import web.salaodebeleza.model.DiaCliente;
 import web.salaodebeleza.model.Funcionario;
 import web.salaodebeleza.model.Pessoa;
 import web.salaodebeleza.model.ServicoSalao;
 import web.salaodebeleza.model.Status;
 import web.salaodebeleza.pagination.PageWrapper;
+import web.salaodebeleza.repository.AgendamentoRepository;
+import web.salaodebeleza.repository.DiaClienteRepository;
 import web.salaodebeleza.repository.DiaRepository;
 import web.salaodebeleza.repository.FuncionarioRepository;
 import web.salaodebeleza.repository.PessoaRepository;
 import web.salaodebeleza.repository.ServicoRepository;
 import web.salaodebeleza.service.AgendamentoService;
+import web.salaodebeleza.service.DiaClienteService;
 import web.salaodebeleza.service.DiaService;
 
 @Controller
@@ -52,6 +57,9 @@ public class AgendamentoController {
     ServicoRepository servicoRepository;
 
     @Autowired 
+    DiaClienteRepository diaClienteRepository;
+
+    @Autowired 
     DiaRepository diaRepository;
 
     @Autowired
@@ -59,6 +67,12 @@ public class AgendamentoController {
 
     @Autowired
     DiaService diaService;
+
+    @Autowired
+    DiaClienteService diaClienteService;
+
+    @Autowired
+    AgendamentoRepository agendamentoRepository;
 
 
 
@@ -142,40 +156,75 @@ public class AgendamentoController {
 
     @GetMapping("/abrirescolherhorario")
     public String abrirEscolhaHorario(Model model, HttpSession sessao,Dia dia, Funcionario funcionario){
+        Agendamento agendamento = (Agendamento) sessao.getAttribute("agendamento");
+            
         logger.info("teste:{}", dia.getDataAgendamento());
         Funcionario funcionarioDia = funcionarioRepository.findByCodigo(funcionario.getCodigo());
         sessao.setAttribute("funcionarioEscolhido", funcionarioDia);
         Dia diaHorario = diaRepository.findByDataAgendamentoAndFuncionario(dia.getDataAgendamento(), funcionario);
+        model.addAttribute("diaCliente", new DiaCliente());
         if(diaHorario==null){
             logger.info("testediaHorario null");
             Dia diaAgendamento = new Dia();
             diaAgendamento.setDataAgendamento(dia.getDataAgendamento());
             diaAgendamento.setFuncionario(funcionarioDia);
+            agendamento.setCodigo_dia_agendamento(diaAgendamento);
             model.addAttribute("diaAgendamento", diaAgendamento);
-
+            
             //colocar na sessao
             return "agendamento/escolherHorario";
         }
         else{
             logger.info("testediaHorario notnull");
             diaHorario.setFuncionario(funcionarioDia);
+            agendamento.setCodigo_dia_agendamento(diaHorario);
             model.addAttribute("diaAgendamento", diaHorario);
             return "agendamento/escolherHorario";
         }
     }
 
     @PostMapping("/escolherhorario")
-    public String escolhaHorario(Dia dia, HttpSession sessao){
+    public String escolhaHorario(DiaCliente dia, HttpSession sessao){
         // comparar esse dia com o da sesdsao se existir
         // se nao existir na sessao pegar o horario que ele marcou
         // se existir pegar a diferencagit c
         // e colocar num attributo
         // model.addAttribute("horario", VALOR);
+        logger.info(dia.toString());
         Agendamento agendamento = (Agendamento)sessao.getAttribute("agendamento");
         Funcionario funcionario = (Funcionario)sessao.getAttribute("funcionarioEscolhido");
-        dia.setFuncionario(funcionario);
+        Dia diaAgendamento = agendamento.getCodigo_dia_agendamento();
+        logger.info(diaAgendamento.toString());
+        try {
+            for (int hora = 7; hora <= 17; hora++) {
+                String campoHora = "h_" + hora; // Obtém o nome do campo correspondente à hora atual
+        
+                java.lang.reflect.Field horarioDiaField = diaAgendamento.getClass().getDeclaredField(campoHora);
+                horarioDiaField.setAccessible(true);
+                Boolean horarioDia = (Boolean) horarioDiaField.get(diaAgendamento); // Obtém o valor do campo do objeto 'diaAgendamento'
+        
+                java.lang.reflect.Field horarioDiaClienteField = dia.getClass().getDeclaredField(campoHora);
+                horarioDiaClienteField.setAccessible(true);
+                Boolean horarioDiaCliente = (Boolean) horarioDiaClienteField.get(dia); // Obtém o valor do campo do objeto 'diaCliente'
+    
+                // Comparando os horários
+                if (horarioDiaCliente == true && horarioDia == false) {
+                    horarioDiaField.set(diaAgendamento, horarioDiaCliente);
+                }
+            }
+        } catch (NoSuchFieldException | IllegalAccessException e) {
+            // Lidar com as exceções adequadamente
+            e.printStackTrace();
+        }
+
+        logger.info(diaAgendamento.toString());
+
+        dia.setCliente(agendamento.getCliente());
+        dia.setDataAgendamento(diaAgendamento.getDataAgendamento());
+        
         agendamento.setFuncionario(funcionario);
-        agendamento.setCodigo_dia_agendamento(dia);
+        agendamento.setCodigo_dia_agendamento(diaAgendamento);
+        agendamento.setCodigo_dia_agendamento_cliente(dia);
         // logger.info("testediaHorario {}",dia);
         return "agendamento/cadastrar";
     }
@@ -186,6 +235,7 @@ public class AgendamentoController {
         if(agendamento!=null){
             if(agendamento.getCliente()!=null && agendamento.getFuncionario()!=null && agendamento.getServico()!=null && agendamento.getCodigo_dia_agendamento()!=null){
                 diaService.salvar(agendamento.getCodigo_dia_agendamento());
+                diaClienteService.salvar(agendamento.getCodigo_dia_agendamento_cliente());
                 agendamentoService.salvar(agendamento);
                 sessao.removeAttribute("agendamento");
                 sessao.removeAttribute("funcionarioEscolhido");
@@ -211,4 +261,17 @@ public class AgendamentoController {
 
         return "forward:/agendamentos/abrircadastrar";
     }
+
+    @GetMapping("/mostraragendamentos")
+    public String mostrarAgendamentos(AgendamentoFilter filtro, Model model,@PageableDefault(size = 5) @SortDefault(sort = "codigo", direction = Sort.Direction.ASC) Pageable pageable,
+    HttpServletRequest request){
+
+        Page<Agendamento> pagina = agendamentoRepository.buscarAgendamentosComObjetos(pageable);
+        PageWrapper<Agendamento> paginaWrapper = new PageWrapper<>(pagina, request);
+        logger.info("agendamentos buscados no BD: {}", paginaWrapper.getConteudo());
+        model.addAttribute("pagina", paginaWrapper);
+        
+        return "agendamento/mostrarTodos";
+    }
+
 }

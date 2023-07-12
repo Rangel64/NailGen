@@ -26,6 +26,9 @@ public class SecurityConfig {
 				// Qualquer um pode fazer requisições para essas URLs
 				.requestMatchers("/css/**", "/js/**", "/images/**", "/", "/index.html").permitAll()
 				.requestMatchers("/usuarios/cadastrar").hasRole("ADMIN")
+				.requestMatchers("/servicos/cadastrar").hasRole("ADMIN")
+				.requestMatchers("/funcionarios/cadastrar").hasRole("ADMIN")
+				
 				.anyRequest().authenticated()
 			)
 			.formLogin(form -> form

@@ -29,6 +29,10 @@ public class Agendamento {
     @ManyToOne(fetch = FetchType.LAZY)
     private Dia codigo_dia_agendamento;
 
+    @JoinColumn(name="codigo_dia_agendamento_cliente")
+    @ManyToOne(fetch = FetchType.LAZY)
+    private DiaCliente codigo_dia_agendamento_cliente;
+
     @JoinColumn(name="codigo_funcionario")
     @ManyToOne(fetch = FetchType.LAZY)
     private Funcionario funcionario;

@@ -1,26 +1,22 @@
 <!DOCTYPE html>
 <html lang="pt-BR" layout:decorate="~{layout/layoutpadrao}" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.thymeleaf.org">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
-<title>Mensagem</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
+    <title>Mensagem</title>
 </head>
 <body>
-	<div layout:fragment="conteudo">
+    <div layout:fragment="conteudo" class ="mainBackgrownd">
+        <div th:replace="~{layout/fragments/sidebar :: sidebar(opcao=${opcao})}"></div>
 
-		<div th:replace="~{layout/fragments/sidebar :: sidebar(opcao=${opcao})}"></div>
-
-		<!-- conteudo principal -->
-		<main class="mt-5 p-4 pt-5">
-			<div class="container-fluid">
-					
-				<h1 th:text="${mensagem}"></h1>
-
-			</div>
-		</main>
-		<!-- !conteudo principal -->
-
-	</div>
-
+        <!-- conteudo principal -->
+        <main class="mt-1 p-1 pt-5 mainBackgrownd" >
+            <div class="container-fluid">
+                <h1 th:text="${mensagem}"></h1>
+                 <img th:src="@{/images/sh_unhas-decoradas-pretas-2020_510849625.jpg}" class="img-fluid mx-auto d-block mt-5" alt="Descrição da imagem">
+            </div>
+        </main>
+        <!-- !conteudo principal -->
+    </div>
 </body>
 </html>

@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="pt-BR" layout:decorate="~{layout/layoutpadrao}" xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.thymeleaf.org">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
+	<title>Todas Pessoas</title>
+</head>
+
+<body>
+	<div layout:fragment="conteudo">
+
+		<div th:replace="~{layout/fragments/sidebar :: sidebar(opcao='agendamentos')}"></div>
+
+		<!-- conteudo principal -->
+		<main class="mt-5 p-4 pt-5">
+			<div class="container-fluid">
+
+				<table class="table table-striped table-hover">
+					<thead>
+						<tr>
+							<th scope="col">Código</th>
+							<th scope="col">Cliente</th>
+							<th scope="col">Dia</th>
+							<th scope="col">Horario</th>
+							<th scope="col">Servico</th>
+							<th scope="col">Funcionario</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr th:each="agendamento : ${pagina.conteudo}">
+							<td th:text="${agendamento.codigo}"></td>
+							<td th:text="${agendamento.cliente.nome}"></td>
+							<td th:text="${#temporals.format(agendamento.codigo_dia_agendamento_cliente.dataAgendamento, 'dd/MM/yyyy')}"></td>
+							<td>
+								<span th:if="${agendamento.codigo_dia_agendamento_cliente.h_7}">7 horas</span>
+								<span th:if="${agendamento.codigo_dia_agendamento_cliente.h_8}">8 horas</span>
+								<span th:if="${agendamento.codigo_dia_agendamento_cliente.h_9}">9 horas</span>
+								<span th:if="${agendamento.codigo_dia_agendamento_cliente.h_10}">10 horas</span>
+								<span th:if="${agendamento.codigo_dia_agendamento_cliente.h_11}">11 horas</span>
+								<span th:if="${agendamento.codigo_dia_agendamento_cliente.h_12}">12 horas</span>
+								<span th:if="${agendamento.codigo_dia_agendamento_cliente.h_13}">13 horas</span>
+								<span th:if="${agendamento.codigo_dia_agendamento_cliente.h_14}">14 horas</span>
+								<span th:if="${agendamento.codigo_dia_agendamento_cliente.h_15}">15 horas</span>
+								<span th:if="${agendamento.codigo_dia_agendamento_cliente.h_16}">16 horas</span>
+								<span th:if="${agendamento.codigo_dia_agendamento_cliente.h_17}">17 horas</span>
+							</td>
+							<td th:text="${agendamento.servico.nome}"></td>
+							<td th:text="${agendamento.funcionario.nome}"></td>
+						</tr>
+					</tbody>
+				</table>
+
+				<div th:replace="~{layout/fragments/paginacao :: paginacao(${pagina})}"></div>
+
+			</div>
+		</main>
+		<!-- !conteudo principal -->
+
+	</div>
+
+</body>
+
+</html>
